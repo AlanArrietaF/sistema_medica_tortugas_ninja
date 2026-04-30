@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/profile_screen.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,7 +8,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
   }
 
   // AppBar: Refleja la navegación profesional y limpia
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -38,13 +39,19 @@ class HomePage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: ElevatedButton(
-            onPressed: () { /* Navegar a HU2: Login [cite: 25, 259] */ },
+            onPressed: () {
+              Navigator.push(
+                context,
+                // --- AQUÍ ESTÁ EL CAMBIO PRINCIPAL ---
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4A90E2),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             ),
             child: const Text('Portal del Paciente'),
-          ),
+          ), // ElevatedButton
         ),
       ],
     );
@@ -69,7 +76,7 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () { /* Navegar a HU16: Agendar Cita [cite: 28, 260] */ },
+                  onPressed: () { /* Navegar a HU16: Agendar Cita */ },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     backgroundColor: const Color(0xFF1A365D),
@@ -86,7 +93,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Service Cards: Basadas en funcionalidades del alcance [cite: 26, 27]
+  // Service Cards: Basadas en funcionalidades del alcance
   Widget _buildServiceCards() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 20.0),

@@ -1,16 +1,3 @@
-// En el archivo main se necesita importar este archivo para que se pueda usar la clase RegistroPage
-// import 'registro.dart'; // Esto llama a tu archivo de registro
-// Ahora, para navegar a la página de registro desde tu página principal, puedes usar un ElevatedButton como este (en main.dart):
-// ElevatedButton(
-//       onPressed: () {
-//         Navigator.push(
-//           context,
-//           MaterialPageRoute(builder: (context) => const RegistroPage()),
-//         );
-//       },
-//      child: const Text('Ir a Registro'),
-//    )
-//    ```
 import 'package:flutter/material.dart';
 
 class RegistroPage extends StatefulWidget {

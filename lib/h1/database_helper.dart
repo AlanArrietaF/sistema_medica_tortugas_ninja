@@ -1,10 +1,3 @@
-// Modificación en el archivo pubspec.yaml
-/*
-dependencies:
-  flutter:
-    sdk: flutter
-  postgres: ^3.0.0 # Añade esta línea
-*/
 import 'package:postgres/postgres.dart';
 
 class DatabaseService {

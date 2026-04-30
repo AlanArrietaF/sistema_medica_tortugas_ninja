@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; 
+
+//clases de h2
+import 'H2/h2.dart'; 
+import 'H2/h2_proveedor_autenticacion.dart'; 
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,7 +12,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -20,30 +25,53 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // AppBar: Refleja la navegación profesional y limpia
-  PreferredSizeWidget _buildAppBar() {
+
+
+  // AppBar actualizado con boton de inicio y registro de sesion
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
-      elevation: 0,
-      title: Row(
-        children: [
-          const Icon(Icons.local_hospital, color: Color(0xFF2B4C7E), size: 30),
-          const SizedBox(width: 10),
-          Text('HOSPITAL', style: TextStyle(color: Colors.blueGrey[900], fontWeight: FontWeight.bold)),
+      backgroundColor: Colors.white, //[cite: 2]
+      elevation: 0, //[cite: 2]
+      title: Row( //[cite: 2]
+        children: [ //[cite: 2]
+          const Icon(Icons.local_hospital, color: Color(0xFF2B4C7E), size: 30), //[cite: 2]
+          const SizedBox(width: 10), //[cite: 2]
+          Text('HOSPITAL', style: TextStyle(color: Colors.blueGrey[900], fontWeight: FontWeight.bold)), //[cite: 2]
         ],
       ),
       actions: [
-        TextButton(onPressed: () {}, child: const Text('Servicios', style: TextStyle(color: Colors.black54))),
-        TextButton(onPressed: () {}, child: const Text('Doctores', style: TextStyle(color: Colors.black54))),
+        TextButton(onPressed: () {}, child: const Text('Servicios', style: TextStyle(color: Colors.black54))), //[cite: 2]
+        TextButton(onPressed: () {}, child: const Text('Doctores', style: TextStyle(color: Colors.black54))), //[cite: 2]
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: ElevatedButton(
-            onPressed: () { /* Navegar a HU2: Login [cite: 25, 259] */ },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4A90E2),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-            child: const Text('Portal del Paciente'),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), //[cite: 2]
+          
+          // Usamos Consumer para escuchar si el usuario ya está logueado
+          child: Consumer<H2ProveedorAutenticacion>(
+            builder: (context, auth, child) {
+              return ElevatedButton(
+                onPressed: () { 
+                  if (auth.estaAutenticado) {
+                    // Si ya hay sesión (médico o paciente), iríamos a su Dashboard
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Ya tienes una sesión activa. Redirigiendo...')),
+                    );
+                  } else {
+                    // Navegar a HU2: Login[cite: 2]
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const H2()),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF4A90E2), //[cite: 2]
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)), //[cite: 2]
+                ),
+                // El texto del botón cambia si ya inició sesión
+                child: Text(auth.estaAutenticado ? 'Ir a mi Panel' : 'Portal del Paciente'),
+              );
+            }
           ),
         ),
       ],
@@ -80,7 +108,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           // Aquí iría el asset de la imagen del médico profesional
-          Expanded(flex: 1, child: Image.network('https://via.placeholder.com/600x400', fit: BoxFit.cover)),
+          Expanded(flex: 1, child: Image.network('https://placehold.co/600x400/png', fit: BoxFit.cover)),
         ],
       ),
     );
